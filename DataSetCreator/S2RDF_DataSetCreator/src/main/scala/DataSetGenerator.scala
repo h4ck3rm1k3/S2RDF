@@ -45,7 +45,7 @@ object DataSetGenerator {
     
     // create or load TripleTable if already created
     if (datasetType == "VP") createTT() else loadTT()
-    // extarct all unique predicates from TripleTable
+    // extract all unique predicates from TripleTable
     // necessary for VP/ExtVP generation
     _uPredicates = _sqlContext.sql("select distinct pred from triples")
                               .map(t => t(0).toString())
@@ -56,9 +56,9 @@ object DataSetGenerator {
     // create or load Vertical Partitioning if already exists
     if (datasetType == "VP") createVP() else loadVP()
         
-    // if we create/recreate VP than we gonna later probably create/recreate 
-    // ExtVP. Out of this reason we remove ExtVP directory containing old tables
-    // and create it empty again
+    // If we create/recreate the VP then later we are going to want to create/recreate 
+    // ExtVP, so we destroy the ExtVP directory containing old tables
+    // and recreate them again
     if (datasetType == "VP"){
       Helper.removeDirInHDFS(Settings.extVpDir)
       Helper.createDirInHDFS(Settings.extVpDir)
